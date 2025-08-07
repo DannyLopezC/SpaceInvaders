@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public interface IPlayerController : IMonoBehaviourController {
+    void RemoveHealth();
+    void AddHealth();
+    event Action OnRemoveHealthEvent;
 }
 
 public class PlayerController : MonoBehaviourController, IPlayerController {
@@ -16,6 +20,9 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
     private Vector3 _moveDirection = Vector3.zero;
     private bool _isMoving;
     private bool _canShoot = true;
+    private int _currentHealth = 3;
+
+    public event Action OnRemoveHealthEvent;
 
     public PlayerController(IPlayerView view, IInputHandler inputHandler,
         IProjectilePoolManager projectilePoolManager, IUpdateManager updateManager) : base(view) {
@@ -68,6 +75,20 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
         position += _moveDirection * _view.GetMoveSpeed() * Time.deltaTime;
         position.x = Mathf.Clamp(position.x, -_view.GetScreenBorder(), _view.GetScreenBorder());
         _view.Transform.position = position;
+    }
+
+    public void AddHealth() {
+        _currentHealth++;
+    }
+
+    public void RemoveHealth() {
+        _currentHealth--;
+
+        OnRemoveHealth();
+    }
+
+    private void OnRemoveHealth() {
+        OnRemoveHealthEvent?.Invoke();
     }
 
     public override void OnDestroy() {

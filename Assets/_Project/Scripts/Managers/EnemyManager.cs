@@ -86,7 +86,7 @@ public class EnemyManager : IEnemyManager {
 
             foreach (List<IEnemyView> enemyC in _enemies) {
                 foreach (IEnemyView enemy in enemyC) {
-                    if (enemy.WillHitBoundary(_currentDirection)) {
+                    if (enemy.WillHitBoundary(_currentDirection) && !enemy.IsDead) {
                         shouldChangeDirection = true;
                         break;
                     }

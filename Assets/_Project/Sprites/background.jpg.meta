@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e976001d0b5b6db4d98671754b88f7db
+guid: 71a550d0a59c14d44abd467f59cc3e7a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4853081772540390281
-    second: Retrowave-Background-Loop-Tutorial-Star-Background_0
+      213: 9120507221601251441
+    second: 230268028_c58d078a-856c-4aed-9ff9-0bf536e245f2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Retrowave-Background-Loop-Tutorial-Star-Background_0
+      name: 230268028_c58d078a-856c-4aed-9ff9-0bf536e245f2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 755
-        height: 420
+        width: 7001
+        height: 4001
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7749ec137d366acb0800000000000000
-      internalID: -4853081772540390281
+      spriteID: 1707deadefc829e70800000000000000
+      internalID: 9120507221601251441
       vertices: []
       indices: 
       edges: []
@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      230268028_c58d078a-856c-4aed-9ff9-0bf536e245f2_0: 9120507221601251441
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
