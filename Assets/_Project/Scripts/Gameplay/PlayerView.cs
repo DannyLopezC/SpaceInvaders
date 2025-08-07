@@ -4,6 +4,7 @@ using UnityEngine.Serialization;
 public interface IPlayerView : IMonoBehaviourView {
     float GetMoveSpeed();
     float GetScreenBorder();
+    float GetShootCooldown();
 }
 
 public class PlayerView : MonoBehaviourView, IPlayerView {
@@ -11,6 +12,8 @@ public class PlayerView : MonoBehaviourView, IPlayerView {
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float screenBorders;
+
+    [SerializeField] private float shootCooldown;
 
     protected override IMonoBehaviourController Controller() {
         return _controller;
@@ -21,7 +24,8 @@ public class PlayerView : MonoBehaviourView, IPlayerView {
 
         _controller = new PlayerController(this,
             serviceLocator.GetService<IInputHandler>(),
-            serviceLocator.GetService<IProjectilePoolManager>());
+            serviceLocator.GetService<IProjectilePoolManager>(),
+            serviceLocator.GetService<IUpdateManager>());
     }
 
     public float GetMoveSpeed() {
@@ -30,5 +34,9 @@ public class PlayerView : MonoBehaviourView, IPlayerView {
 
     public float GetScreenBorder() {
         return screenBorders;
+    }
+
+    public float GetShootCooldown() {
+        return shootCooldown;
     }
 }

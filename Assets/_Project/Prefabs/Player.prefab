@@ -102,3 +102,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   screenBorders: 7
+  shootCooldown: 1

@@ -14,8 +14,6 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
     }
 
     protected override void CreateController() {
-        ServiceLocator serviceLocator = ServiceLocator.Instance;
-
         _controller = new ProjectileController(this);
     }
 
