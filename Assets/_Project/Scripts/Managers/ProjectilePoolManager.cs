@@ -9,17 +9,17 @@ public interface IProjectilePoolManager {
 }
 
 public class ProjectilePoolManager : IProjectilePoolManager {
-    private readonly ObjectPool<ProjectileView> _playerBulletPool;
-    private readonly ObjectPool<ProjectileView> _enemyBulletPool;
+    private readonly ObjectPool<ProjectileView> _playerProjectilePool;
+    private readonly ObjectPool<ProjectileView> _enemyProjectilePool;
 
     public ProjectilePoolManager(ProjectileView playerPrefab, ProjectileView enemyPrefab) {
-        _playerBulletPool = new ObjectPool<ProjectileView>(playerPrefab, 10);
-        _enemyBulletPool = new ObjectPool<ProjectileView>(enemyPrefab, 10);
+        _playerProjectilePool = new ObjectPool<ProjectileView>(playerPrefab, 10);
+        _enemyProjectilePool = new ObjectPool<ProjectileView>(enemyPrefab, 10);
     }
 
-    public ProjectileView GetPlayerBullet() => _playerBulletPool.Get();
-    public ProjectileView GetEnemyBullet() => _enemyBulletPool.Get();
+    public ProjectileView GetPlayerBullet() => _playerProjectilePool.Get();
+    public ProjectileView GetEnemyBullet() => _enemyProjectilePool.Get();
 
-    public void ReturnPlayerBullet(ProjectileView projectile) => _playerBulletPool.ReturnToPool(projectile);
-    public void ReturnEnemyBullet(ProjectileView projectile) => _enemyBulletPool.ReturnToPool(projectile);
+    public void ReturnPlayerBullet(ProjectileView projectile) => _playerProjectilePool.ReturnToPool(projectile);
+    public void ReturnEnemyBullet(ProjectileView projectile) => _enemyProjectilePool.ReturnToPool(projectile);
 }

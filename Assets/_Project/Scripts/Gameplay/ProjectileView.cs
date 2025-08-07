@@ -12,6 +12,8 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float projectileLifeTime;
 
+    private const string ENEMY_TAG = "Enemy";
+
     protected override IMonoBehaviourController Controller() {
         return _controller;
     }
@@ -36,7 +38,7 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Enemy")) {
+        if (other.CompareTag(ENEMY_TAG)) {
             _controller.OnProjectileCollided();
         }
     }

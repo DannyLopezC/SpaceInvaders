@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public partial class ServiceLocator {
     private void RegisterFactories() {
         // Add more factory registrations here
-        AddFactory<IGameManager>(_ => new GameManager());
         AddFactory<IProjectilePoolManager>(_ => new ProjectilePoolManager(
-            Resources.Load<ProjectileView>("Projectile"),
-            Resources.Load<ProjectileView>("Projectile")));
+            Resources.Load<ProjectileView>("PlayerProjectile"),
+            Resources.Load<ProjectileView>("EnemyProjectile")));
+
+        AddFactory<IEnemyManager>(sl => new EnemyManager(sl.GetService<IUpdateManager>(),
+            Resources.Load<GameObject>("Enemy")));
 
         AddFactory(_ => new InputSystem_Actions());
 
