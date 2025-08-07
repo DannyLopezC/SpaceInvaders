@@ -44,7 +44,7 @@ public partial class ServiceLocator {
 
         if (!_services.ContainsKey(type)) {
             if (!_factories.ContainsKey(type)) {
-                Debug.LogError($"#ServiceLocator# No factory registered for type {type}");
+                //Debug.LogError($"#ServiceLocator# No factory registered for type {type}");
                 return null;
             }
 
