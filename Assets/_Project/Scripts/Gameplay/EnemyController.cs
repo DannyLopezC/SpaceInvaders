@@ -1,4 +1,5 @@
 ﻿public interface IEnemyController : IMonoBehaviourController {
+    void Die();
 }
 
 public class EnemyController : MonoBehaviourController, IEnemyController {
@@ -6,5 +7,9 @@ public class EnemyController : MonoBehaviourController, IEnemyController {
 
     public EnemyController(IEnemyView view) : base(view) {
         _view = view;
+    }
+
+    public void Die() {
+        _view.GameObject.SetActive(false);
     }
 }

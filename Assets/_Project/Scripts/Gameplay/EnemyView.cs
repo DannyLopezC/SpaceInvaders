@@ -1,4 +1,7 @@
-﻿public interface IEnemyView : IMonoBehaviourView {
+﻿using System;
+using UnityEngine;
+
+public interface IEnemyView : IMonoBehaviourView {
 }
 
 public class EnemyView : MonoBehaviourView, IEnemyView {
@@ -12,5 +15,11 @@ public class EnemyView : MonoBehaviourView, IEnemyView {
         ServiceLocator serviceLocator = ServiceLocator.Instance;
 
         _controller = new EnemyController(this);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Projectile")) {
+            _controller.Die();
+        }
     }
 }

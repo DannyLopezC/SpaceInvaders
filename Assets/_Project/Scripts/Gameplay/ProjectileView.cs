@@ -1,20 +1,26 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public interface IProjectileView : IMonoBehaviourView {
     void StartMoving(Vector2 direction);
     float GetProjectileSpeed();
+    float GetProjectileLifeTime();
 }
 
 public class ProjectileView : MonoBehaviourView, IProjectileView {
     private IProjectileController _controller;
     [SerializeField] private float projectileSpeed;
+    [SerializeField] private float projectileLifeTime;
 
     protected override IMonoBehaviourController Controller() {
         return _controller;
     }
 
     protected override void CreateController() {
-        _controller = new ProjectileController(this);
+        ServiceLocator serviceLocator = ServiceLocator.Instance;
+
+        _controller = new ProjectileController(this,
+            serviceLocator.GetService<IUpdateManager>());
     }
 
     public void StartMoving(Vector2 direction) {
@@ -23,5 +29,15 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
 
     public float GetProjectileSpeed() {
         return projectileSpeed;
+    }
+
+    public float GetProjectileLifeTime() {
+        return projectileLifeTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Enemy")) {
+            _controller.OnProjectileCollided();
+        }
     }
 }
