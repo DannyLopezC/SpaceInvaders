@@ -4,6 +4,7 @@ public interface IMonoBehaviourController {
     void OnUpdate();
     void OnFixedUpdate();
     void OnDestroy();
+    void OnDisable();
 }
 
 public class MonoBehaviourController : IMonoBehaviourController {
@@ -26,5 +27,8 @@ public class MonoBehaviourController : IMonoBehaviourController {
     }
 
     public virtual void OnDestroy() {
+    }
+
+    public virtual void OnDisable() {
     }
 }

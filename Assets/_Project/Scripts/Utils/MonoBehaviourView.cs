@@ -34,5 +34,9 @@ public abstract class MonoBehaviourView : MonoBehaviour, IMonoBehaviourView {
         Controller().OnDestroy();
     }
 
+    protected virtual void OnDisable() {
+        Controller().OnDisable();
+    }
+
     protected abstract void CreateController();
 }

@@ -19,7 +19,9 @@ public class PlayerView : MonoBehaviourView, IPlayerView {
     protected override void CreateController() {
         ServiceLocator serviceLocator = ServiceLocator.Instance;
 
-        _controller = new PlayerController(this, serviceLocator.GetService<IInputHandler>());
+        _controller = new PlayerController(this,
+            serviceLocator.GetService<IInputHandler>(),
+            serviceLocator.GetService<IProjectilePoolManager>());
     }
 
     public float GetMoveSpeed() {
