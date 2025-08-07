@@ -8,6 +8,7 @@ public interface IEnemyView : IMonoBehaviourView {
     void Move(Vector2 direction);
 
     float GetSpeed();
+    void SetSprite(Sprite sprite);
 }
 
 public class EnemyView : MonoBehaviourView, IEnemyView {
@@ -18,6 +19,7 @@ public class EnemyView : MonoBehaviourView, IEnemyView {
     public bool IsDead => _controller.IsDead();
 
     [SerializeField] private float moveSpeed;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     protected override IMonoBehaviourController Controller() {
         return _controller;
@@ -45,6 +47,10 @@ public class EnemyView : MonoBehaviourView, IEnemyView {
 
     public float GetSpeed() {
         return moveSpeed;
+    }
+
+    public void SetSprite(Sprite sprite) {
+        spriteRenderer.sprite = sprite;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

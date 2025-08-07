@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 public interface IEnemyManager {
-    void SpawnEnemies(GameObject enemiesParent);
+    void SpawnEnemies(GameObject enemiesParent, Sprite redSprite, Sprite greenSprite, Sprite yellowSprite);
     void MakeRandomEnemyShoot();
     bool AnyEnemyAlive();
     IEnumerator MoveEnemies();
@@ -14,19 +14,17 @@ public class EnemyManager : IEnemyManager {
     private readonly IUpdateManager _updateManager;
     private readonly GameObject _enemyPrefab;
 
-    private const int COL = 11;
+    private const int COL = 15;
     private const int ROW = 5;
 
-    private const float START_X = -6f;
+    private const float START_X = -5f;
     private const float START_Y = 4f;
-    private const float SPACING_X = 1f;
-    private const float SPACING_Y = 1f;
+    private const float SPACING_X = 0.8f;
+    private const float SPACING_Y = 0.8f;
 
     private float _moveDelay = 0.5f;
     private Vector2 _currentDirection = Vector2.right;
-
-    private float _leftBound = -7f;
-    private float _rightBound = 7f;
+    private Sprite _currentSprite;
 
     private List<List<IEnemyView>> _enemies;
 
@@ -35,10 +33,29 @@ public class EnemyManager : IEnemyManager {
         _enemyPrefab = enemyPrefab;
     }
 
-    public void SpawnEnemies(GameObject enemiesParent) {
+    public void SpawnEnemies(GameObject enemiesParent, Sprite redSprite, Sprite greenSprite, Sprite yellowSprite) {
         _enemies = new List<List<IEnemyView>>();
         for (int i = 0; i < ROW; i++) {
             _enemies.Add(new List<IEnemyView>());
+
+            switch (i) {
+                case 0:
+                    _currentSprite = redSprite;
+                    break;
+                case 1:
+                case 2:
+                    _currentSprite = yellowSprite;
+                    break;
+                case 3:
+                case 4:
+                    _currentSprite = greenSprite;
+                    break;
+                default:
+                    _currentSprite = redSprite;
+                    Debug.LogError($"SPRITE NOT FOUND USING RED INSTEAD");
+                    break;
+            }
+
             for (int j = 0; j < COL; j++) {
                 IEnemyView enemy = Object.Instantiate(_enemyPrefab, enemiesParent.transform).GetComponent<EnemyView>();
                 _enemies[i].Add(enemy);
@@ -46,6 +63,7 @@ public class EnemyManager : IEnemyManager {
                 float x = START_X + j * SPACING_X;
                 float y = START_Y - i * SPACING_Y;
                 enemy.Transform.position = new Vector3(x, y, 0f);
+                enemy.SetSprite(_currentSprite);
             }
         }
     }
