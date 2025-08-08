@@ -7,7 +7,6 @@ public interface IPlayerView : IMonoBehaviourView {
     float GetScreenBorder();
     float GetShootCooldown();
     void AddHealth();
-    event Action OnRemoveHealthEvent;
 }
 
 public class PlayerView : MonoBehaviourView, IPlayerView {
@@ -20,8 +19,6 @@ public class PlayerView : MonoBehaviourView, IPlayerView {
 
     private const string PROJECTILE_TAG = "Projectile";
 
-    public event Action OnRemoveHealthEvent;
-
     protected override IMonoBehaviourController Controller() {
         return _controller;
     }
@@ -32,9 +29,10 @@ public class PlayerView : MonoBehaviourView, IPlayerView {
         _controller = new PlayerController(this,
             serviceLocator.GetService<IInputHandler>(),
             serviceLocator.GetService<IProjectilePoolManager>(),
-            serviceLocator.GetService<IUpdateManager>());
+            serviceLocator.GetService<IUpdateManager>(), GameManager.Instance);
 
-        _controller.OnRemoveHealthEvent += OnRemoveHealth;
+        serviceLocator.AddFactory<IPlayerController>(_ => _controller);
+        gameObject.SetActive(false);
     }
 
     public float GetMoveSpeed() {
@@ -53,17 +51,9 @@ public class PlayerView : MonoBehaviourView, IPlayerView {
         _controller.AddHealth();
     }
 
-    private void OnRemoveHealth() {
-        OnRemoveHealthEvent?.Invoke();
-    }
-
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(PROJECTILE_TAG)) {
             _controller.RemoveHealth();
         }
-    }
-
-    protected override void OnDestroy() {
-        _controller.OnRemoveHealthEvent -= OnRemoveHealth;
     }
 }

@@ -8,17 +8,20 @@ public interface IEnemyView : IMonoBehaviourView {
     void Move(Vector2 direction);
 
     float GetSpeed();
+    float GetMoveSpeedIncrement();
     void SetSprite(Sprite sprite);
 }
 
 public class EnemyView : MonoBehaviourView, IEnemyView {
     private IEnemyController _controller;
 
-    private const string PROJECTILE_TAG = "Projectile";
+    private const string PLAYER_PROJECTILE_TAG = "PlayerProjectile";
+    private const string ENEMIES_LIMIT_TAG = "EnemiesLimit";
 
     public bool IsDead => _controller.IsDead();
 
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveSpeedIncrement;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     protected override IMonoBehaviourController Controller() {
@@ -30,7 +33,8 @@ public class EnemyView : MonoBehaviourView, IEnemyView {
 
         _controller = new EnemyController(this,
             serviceLocator.GetService<IEnemyManager>(),
-            serviceLocator.GetService<IProjectilePoolManager>());
+            serviceLocator.GetService<IProjectilePoolManager>(),
+            GameManager.Instance);
     }
 
     public void Shoot() {
@@ -49,13 +53,20 @@ public class EnemyView : MonoBehaviourView, IEnemyView {
         return moveSpeed;
     }
 
+    public float GetMoveSpeedIncrement() {
+        return moveSpeedIncrement;
+    }
+
     public void SetSprite(Sprite sprite) {
         spriteRenderer.sprite = sprite;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag(PROJECTILE_TAG)) {
+        if (other.CompareTag(PLAYER_PROJECTILE_TAG)) {
             _controller.Die();
+        }
+
+        if (other.CompareTag(ENEMIES_LIMIT_TAG)) {
         }
     }
 }

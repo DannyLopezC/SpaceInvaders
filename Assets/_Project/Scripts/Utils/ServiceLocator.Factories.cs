@@ -9,7 +9,7 @@ public partial class ServiceLocator {
             Resources.Load<ProjectileView>("EnemyProjectile")));
 
         AddFactory<IEnemyManager>(sl => new EnemyManager(sl.GetService<IUpdateManager>(),
-            Resources.Load<GameObject>("Enemy")));
+            Resources.Load<GameObject>("Enemy"), sl.GetService<IPlayerController>()));
 
         AddFactory(_ => new InputSystem_Actions());
 

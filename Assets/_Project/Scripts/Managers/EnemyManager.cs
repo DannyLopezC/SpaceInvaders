@@ -8,10 +8,12 @@ public interface IEnemyManager {
     void MakeRandomEnemyShoot();
     bool AnyEnemyAlive();
     IEnumerator MoveEnemies();
+    void KillPlayer();
 }
 
 public class EnemyManager : IEnemyManager {
     private readonly IUpdateManager _updateManager;
+    private readonly IPlayerController _playerController;
     private readonly GameObject _enemyPrefab;
 
     private const int COL = 15;
@@ -27,10 +29,12 @@ public class EnemyManager : IEnemyManager {
     private Sprite _currentSprite;
 
     private List<List<IEnemyView>> _enemies;
+    private bool gettingKilled = false;
 
-    public EnemyManager(IUpdateManager updateManager, GameObject enemyPrefab) {
+    public EnemyManager(IUpdateManager updateManager, GameObject enemyPrefab, IPlayerController playerController) {
         _updateManager = updateManager;
         _enemyPrefab = enemyPrefab;
+        _playerController = playerController;
     }
 
     public void SpawnEnemies(GameObject enemiesParent, Sprite redSprite, Sprite greenSprite, Sprite yellowSprite) {
@@ -69,11 +73,24 @@ public class EnemyManager : IEnemyManager {
     }
 
     public void MakeRandomEnemyShoot() {
-        int col = Random.Range(0, COL);
+        List<int> aliveCols = new List<int>();
+
+        for (int col = 0; col < COL; col++) {
+            for (int row = 0; row < ROW; row++) {
+                if (!_enemies[row][col].IsDead) {
+                    aliveCols.Add(col);
+                    break;
+                }
+            }
+        }
+
+        if (aliveCols.Count == 0) return;
+
+        int selectedCol = aliveCols[Random.Range(0, aliveCols.Count)];
 
         for (int row = ROW - 1; row >= 0; row--) {
-            IEnemyView enemy = _enemies[row][col];
-            if (enemy is { IsDead: false }) {
+            IEnemyView enemy = _enemies[row][selectedCol];
+            if (!enemy.IsDead) {
                 enemy.Shoot();
                 break;
             }
@@ -112,6 +129,12 @@ public class EnemyManager : IEnemyManager {
 
             yield return new WaitForSeconds(_moveDelay);
         }
+    }
+
+    public void KillPlayer() {
+        if (gettingKilled) return;
+        gettingKilled = true;
+        _playerController.RemoveHealth();
     }
 
     public bool AnyEnemyAlive() {

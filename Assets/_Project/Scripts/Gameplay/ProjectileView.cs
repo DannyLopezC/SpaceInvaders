@@ -11,6 +11,7 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
     private IProjectileController _controller;
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float projectileLifeTime;
+    [SerializeField] private bool playerProjectile;
 
     private const string ENEMY_TAG = "Enemy";
     private const string PLAYER_TAG = "Player";
@@ -39,11 +40,11 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag(ENEMY_TAG)) {
+        if (other.CompareTag(ENEMY_TAG) && playerProjectile) {
             _controller.OnProjectileCollided();
         }
 
-        if (other.CompareTag(PLAYER_TAG)) {
+        if (other.CompareTag(PLAYER_TAG) && !playerProjectile) {
             _controller.OnProjectileCollided();
         }
     }

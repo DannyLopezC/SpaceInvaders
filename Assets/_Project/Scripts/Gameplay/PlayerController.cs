@@ -9,6 +9,8 @@ public interface IPlayerController : IMonoBehaviourController {
     void RemoveHealth();
     void AddHealth();
     event Action OnRemoveHealthEvent;
+    void ToggleView(bool toggle);
+    int GetHealth();
 }
 
 public class PlayerController : MonoBehaviourController, IPlayerController {
@@ -16,6 +18,7 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
     private readonly IInputHandler _inputHandler;
     private readonly IProjectilePoolManager _projectilePoolManager;
     private readonly IUpdateManager _updateManager;
+    private readonly IGameManager _gameManager;
 
     private Vector3 _moveDirection = Vector3.zero;
     private bool _isMoving;
@@ -25,11 +28,13 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
     public event Action OnRemoveHealthEvent;
 
     public PlayerController(IPlayerView view, IInputHandler inputHandler,
-        IProjectilePoolManager projectilePoolManager, IUpdateManager updateManager) : base(view) {
+        IProjectilePoolManager projectilePoolManager, IUpdateManager updateManager,
+        IGameManager gameManager) : base(view) {
         _view = view;
         _inputHandler = inputHandler;
         _projectilePoolManager = projectilePoolManager;
         _updateManager = updateManager;
+        _gameManager = gameManager;
     }
 
     public override void OnStart() {
@@ -52,7 +57,7 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
     }
 
     private void OnShoot() {
-        if (!_canShoot) return;
+        if (!_canShoot || !_gameManager.GetIsPlaying()) return;
 
         ProjectileView projectile = _projectilePoolManager.GetPlayerBullet();
         projectile.transform.position = _view.Transform.position + Vector3.up * 1f;
@@ -67,7 +72,7 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
     }
 
     public override void OnUpdate() {
-        if (_isMoving) PlayerMovement();
+        if (_isMoving && _gameManager.GetIsPlaying()) PlayerMovement();
     }
 
     private void PlayerMovement() {
@@ -85,10 +90,19 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
         _currentHealth--;
 
         OnRemoveHealth();
+        ToggleView(false);
     }
 
     private void OnRemoveHealth() {
         OnRemoveHealthEvent?.Invoke();
+    }
+
+    public void ToggleView(bool toggle) {
+        _view.GameObject.SetActive(toggle);
+    }
+
+    public int GetHealth() {
+        return _currentHealth;
     }
 
     public override void OnDestroy() {
