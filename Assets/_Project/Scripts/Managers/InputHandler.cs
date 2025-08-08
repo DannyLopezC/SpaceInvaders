@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public interface IInputHandler {
     event Action<Vector2> OnMoveInput;
     event Action OnShootInput;
+    void RemoveListeners();
 }
 
 public class InputHandler : IInputHandler {
@@ -32,5 +33,11 @@ public class InputHandler : IInputHandler {
 
     private void OnShoot(InputAction.CallbackContext context) {
         OnShootInput?.Invoke();
+    }
+
+    public void RemoveListeners() {
+        _inputSystemActions.Player.Move.performed -= OnMove;
+        _inputSystemActions.Player.Move.canceled -= OnMove;
+        _inputSystemActions.Player.Attack.performed -= OnShoot;
     }
 }

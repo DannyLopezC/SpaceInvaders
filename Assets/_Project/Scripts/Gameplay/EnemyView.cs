@@ -67,6 +67,7 @@ public class EnemyView : MonoBehaviourView, IEnemyView {
         }
 
         if (other.CompareTag(ENEMIES_LIMIT_TAG)) {
+            _controller.KillPlayer();
         }
     }
 }

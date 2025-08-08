@@ -16,7 +16,7 @@ public class EnemyManager : IEnemyManager {
     private readonly IPlayerController _playerController;
     private readonly GameObject _enemyPrefab;
 
-    private const int COL = 15;
+    private const int COL = 12;
     private const int ROW = 5;
 
     private const float START_X = -5f;
@@ -38,6 +38,8 @@ public class EnemyManager : IEnemyManager {
     }
 
     public void SpawnEnemies(GameObject enemiesParent, Sprite redSprite, Sprite greenSprite, Sprite yellowSprite) {
+        _currentDirection = Vector2.right;
+        gettingKilled = false;
         _enemies = new List<List<IEnemyView>>();
         for (int i = 0; i < ROW; i++) {
             _enemies.Add(new List<IEnemyView>());

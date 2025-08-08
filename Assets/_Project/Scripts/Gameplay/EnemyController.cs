@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviourController, IEnemyController {
     private readonly IProjectilePoolManager _projectilePoolManager;
     private readonly IGameManager _gameManager;
     private bool _isDead;
+    private float _currentMovementIncrement;
 
     public EnemyController(IEnemyView view,
         IEnemyManager enemyManager,
@@ -25,6 +26,7 @@ public class EnemyController : MonoBehaviourController, IEnemyController {
         _enemyManager = enemyManager;
         _projectilePoolManager = projectilePoolManager;
         _gameManager = gameManager;
+        _currentMovementIncrement = (_gameManager.GetCurrentLevel() - 1) * _view.GetMoveSpeedIncrement();
     }
 
     public void Die() {
@@ -45,13 +47,18 @@ public class EnemyController : MonoBehaviourController, IEnemyController {
     public bool WillHitBoundary(Vector2 direction) {
         Vector3 newPos = _view.Transform.position + (Vector3)(direction * _view.GetSpeed());
 
-        return newPos.x is < -7 or > 7;
+        switch (newPos.x) {
+            case < -7 when direction.x < 0:
+            case > 7 when direction.x > 0:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void Move(Vector2 direction) {
         _view.Transform.position +=
-            (Vector3)(direction *
-                      (_view.GetSpeed() + (_gameManager.GetCurrentLevel() - 1) * _view.GetMoveSpeedIncrement()));
+            (Vector3)(direction * (_view.GetSpeed() + _currentMovementIncrement));
     }
 
     public void KillPlayer() {

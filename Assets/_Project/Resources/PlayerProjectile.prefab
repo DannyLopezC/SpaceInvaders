@@ -105,6 +105,7 @@ MonoBehaviour:
   projectileSpeed: 5
   projectileLifeTime: 3
   playerProjectile: 1
+  explosionPrefab: {fileID: 7094873267679982908, guid: 8a2523d7967359b4fa440479c030834c, type: 3}
 --- !u!61 &3003316273483222620
 BoxCollider2D:
   m_ObjectHideFlags: 0

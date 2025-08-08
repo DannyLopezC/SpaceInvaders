@@ -5,6 +5,7 @@ public interface IProjectileView : IMonoBehaviourView {
     void StartMoving(Vector2 direction);
     float GetProjectileSpeed();
     float GetProjectileLifeTime();
+    GameObject GetExplosionPrefab();
 }
 
 public class ProjectileView : MonoBehaviourView, IProjectileView {
@@ -12,6 +13,7 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float projectileLifeTime;
     [SerializeField] private bool playerProjectile;
+    [SerializeField] private GameObject explosionPrefab;
 
     private const string ENEMY_TAG = "Enemy";
     private const string PLAYER_TAG = "Player";
@@ -39,6 +41,10 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
 
     public float GetProjectileLifeTime() {
         return projectileLifeTime;
+    }
+
+    public GameObject GetExplosionPrefab() {
+        return explosionPrefab;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

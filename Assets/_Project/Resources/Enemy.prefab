@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.1
-  moveSpeedIncrement: 0.1
+  moveSpeedIncrement: 0.06
   spriteRenderer: {fileID: 7303008978152720333}
 --- !u!61 &3492709665589589987
 BoxCollider2D:

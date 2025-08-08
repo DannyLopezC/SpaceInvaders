@@ -36,9 +36,19 @@ public class ProjectileController : MonoBehaviourController, IProjectileControll
 
     public void OnProjectileCollided() {
         _isMoving = false;
+        // _updateManager.StartCoroutine(ProjectileExplosion());
         _view.GameObject.SetActive(false);
         if (_destroyCoroutine != null) _updateManager.StopCoroutine(_destroyCoroutine);
         _destroyCoroutine = null;
+    }
+
+    private IEnumerator ProjectileExplosion() {
+        GameObject explosionInstance = Object.Instantiate(_view.GetExplosionPrefab());
+        explosionInstance.transform.position = _view.GameObject.transform.position;
+        explosionInstance.transform.localScale = Vector3.one * 0.4f;
+
+        yield return new WaitForSeconds(2);
+        Object.Destroy(explosionInstance);
     }
 
     private void Move() {

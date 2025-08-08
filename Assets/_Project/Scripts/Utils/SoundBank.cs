@@ -5,6 +5,7 @@ public interface ISoundBank {
     AudioClip GetAudioClip(string key);
 
     void AddAudioClip(string key, AudioClip clip);
+    void ClearDictionary();
 }
 
 [CreateAssetMenu(fileName = "SoundBank", menuName = "Game/SoundBank")]
@@ -25,5 +26,9 @@ public class SoundBank : ScriptableObject, ISoundBank {
 
     public void AddAudioClip(string key, AudioClip clip) {
         _audioClips.Add(key, clip);
+    }
+
+    public void ClearDictionary() {
+        _audioClips.Clear();
     }
 }

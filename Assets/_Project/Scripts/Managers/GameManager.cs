@@ -20,12 +20,13 @@ public class GameManager : Singleton<GameManager>, IGameManager {
     private IPlayerController _playerController;
     private IUIManager _uiManager => UIManager.Instance;
     private IObstacleManager _obstacleManager;
+    private IInputHandler _inputHandler;
 
     public event Action PlayerWonEvent;
     public event Action StartWaveEvent;
     public event Action PlayerLostEvent;
 
-    private int _currentLevel = 1;
+    private int _currentLevel = 10;
     private bool _playing;
     private Vector2 shootingTimeRange = new Vector2(1f, 1.3f);
 
@@ -53,6 +54,7 @@ public class GameManager : Singleton<GameManager>, IGameManager {
         _enemyManager = _serviceLocator.GetService<IEnemyManager>();
         _playerController = _serviceLocator.GetService<IPlayerController>();
         _obstacleManager = _serviceLocator.GetService<IObstacleManager>();
+        _inputHandler = _serviceLocator.GetService<IInputHandler>();
         _playerController.OnRemoveHealthEvent += OnPlayerRemoveHealth;
     }
 
@@ -111,8 +113,7 @@ public class GameManager : Singleton<GameManager>, IGameManager {
 
     private void StopGame() {
         _playing = false;
-        StopCoroutine(_shootingCoroutine);
-        StopCoroutine(_movementCoroutine);
+        StopAllCoroutines();
         _obstacleManager.ClearObstacles(obstacleParent.transform);
 
         foreach (Transform child in enemiesParent.transform) {
@@ -148,5 +149,7 @@ public class GameManager : Singleton<GameManager>, IGameManager {
 
     private void OnDestroy() {
         if (_playerController != null) _playerController.OnRemoveHealthEvent -= OnPlayerRemoveHealth;
+        SoundBank.Instance.ClearDictionary();
+        _inputHandler?.RemoveListeners();
     }
 }
