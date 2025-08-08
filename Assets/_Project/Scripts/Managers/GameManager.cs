@@ -19,6 +19,7 @@ public class GameManager : Singleton<GameManager>, IGameManager {
     private IEnemyManager _enemyManager;
     private IPlayerController _playerController;
     private IUIManager _uiManager => UIManager.Instance;
+    private IObstacleManager _obstacleManager;
 
     public event Action PlayerWonEvent;
     public event Action StartWaveEvent;
@@ -30,6 +31,7 @@ public class GameManager : Singleton<GameManager>, IGameManager {
 
     [SerializeField] private float enemyShootingTimeRangeDecrease;
     [SerializeField] private GameObject enemiesParent;
+    [SerializeField] private GameObject obstacleParent;
     [SerializeField] private Sprite redSprite;
     [SerializeField] private Sprite greenSprite;
     [SerializeField] private Sprite yellowSprite;
@@ -39,10 +41,18 @@ public class GameManager : Singleton<GameManager>, IGameManager {
     private Coroutine _shootingCoroutine;
     private Coroutine _movementCoroutine;
 
+    protected override void Awake() {
+        SoundBank.Instance.AddAudioClip("Projectile", Resources.Load<AudioClip>("Music/Laser"));
+        SoundBank.Instance.AddAudioClip("GameOver", Resources.Load<AudioClip>("Music/gameOver"));
+        SoundBank.Instance.AddAudioClip("Explosion", Resources.Load<AudioClip>("Music/Explosion"));
+        SoundBank.Instance.AddAudioClip("Win", Resources.Load<AudioClip>("Music/Win"));
+    }
+
     protected void Start() {
         _serviceLocator = ServiceLocator.Instance;
         _enemyManager = _serviceLocator.GetService<IEnemyManager>();
         _playerController = _serviceLocator.GetService<IPlayerController>();
+        _obstacleManager = _serviceLocator.GetService<IObstacleManager>();
         _playerController.OnRemoveHealthEvent += OnPlayerRemoveHealth;
     }
 
@@ -65,12 +75,14 @@ public class GameManager : Singleton<GameManager>, IGameManager {
         _shootingCoroutine = StartCoroutine(StartShooting());
         _movementCoroutine = StartCoroutine(_enemyManager.MoveEnemies());
         _uiManager.ActivateHeartsPanel(_playerController.GetHealth());
+        _obstacleManager.SpawnObstacles(obstacleParent.transform);
     }
 
     private void NextLevel() {
+        if (!_playing) return;
+        SoundManager.Instance.PlaySoundEffect("Win", 0.8f);
         _currentLevel++;
-
-        if (_currentLevel > 2) {
+        if (_currentLevel > 10) {
             StopGame();
             OnPlayerWonEvent();
             return;
@@ -81,6 +93,8 @@ public class GameManager : Singleton<GameManager>, IGameManager {
     }
 
     private void OnPlayerRemoveHealth() {
+        if (!_playing) return;
+        SoundManager.Instance.PlaySoundEffect("GameOver", 0.4f);
         if (_playerController.GetHealth() <= 0) {
             StopGame();
             OnPlayerLostEvent();
@@ -99,6 +113,7 @@ public class GameManager : Singleton<GameManager>, IGameManager {
         _playing = false;
         StopCoroutine(_shootingCoroutine);
         StopCoroutine(_movementCoroutine);
+        _obstacleManager.ClearObstacles(obstacleParent.transform);
 
         foreach (Transform child in enemiesParent.transform) {
             Destroy(child.gameObject);

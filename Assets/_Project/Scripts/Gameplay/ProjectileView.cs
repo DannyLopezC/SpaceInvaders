@@ -15,6 +15,7 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
 
     private const string ENEMY_TAG = "Enemy";
     private const string PLAYER_TAG = "Player";
+    private const string OBSTACLE_TAG = "Obstacle";
 
     protected override IMonoBehaviourController Controller() {
         return _controller;
@@ -29,6 +30,7 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
 
     public void StartMoving(Vector2 direction) {
         _controller.StartMoving(direction);
+        SoundManager.Instance.PlaySoundEffect("Projectile");
     }
 
     public float GetProjectileSpeed() {
@@ -42,10 +44,16 @@ public class ProjectileView : MonoBehaviourView, IProjectileView {
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(ENEMY_TAG) && playerProjectile) {
             _controller.OnProjectileCollided();
+            SoundManager.Instance.PlaySoundEffect("Explosion", 0.8f);
         }
 
         if (other.CompareTag(PLAYER_TAG) && !playerProjectile) {
             _controller.OnProjectileCollided();
+        }
+
+        if (other.CompareTag(OBSTACLE_TAG)) {
+            _controller.OnProjectileCollided();
+            SoundManager.Instance.PlaySoundEffect("Explosion", 0.8f);
         }
     }
 }

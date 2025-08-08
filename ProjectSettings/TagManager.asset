@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - EnemiesLimit
   - PlayerProjectile
+  - Obstacle
   layers:
   - Default
   - TransparentFX

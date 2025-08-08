@@ -37,7 +37,7 @@ public class ProjectileController : MonoBehaviourController, IProjectileControll
     public void OnProjectileCollided() {
         _isMoving = false;
         _view.GameObject.SetActive(false);
-        _updateManager.StopCoroutine(_destroyCoroutine);
+        if (_destroyCoroutine != null) _updateManager.StopCoroutine(_destroyCoroutine);
         _destroyCoroutine = null;
     }
 

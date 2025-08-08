@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   screenBorders: 7
-  shootCooldown: 0.5
+  shootCooldown: 0.2
 --- !u!61 &306420432359863717
 BoxCollider2D:
   m_ObjectHideFlags: 0

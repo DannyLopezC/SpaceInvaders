@@ -11,6 +11,8 @@ public partial class ServiceLocator {
         AddFactory<IEnemyManager>(sl => new EnemyManager(sl.GetService<IUpdateManager>(),
             Resources.Load<GameObject>("Enemy"), sl.GetService<IPlayerController>()));
 
+        AddFactory<IObstacleManager>(sl => new ObstacleManager(Resources.Load<GameObject>("Obstacle")));
+
         AddFactory(_ => new InputSystem_Actions());
 
         AddFactory<IInputHandler>(sl => new InputHandler(

@@ -16,7 +16,7 @@ public class EnemyManager : IEnemyManager {
     private readonly IPlayerController _playerController;
     private readonly GameObject _enemyPrefab;
 
-    private const int COL = 8;
+    private const int COL = 15;
     private const int ROW = 5;
 
     private const float START_X = -5f;
