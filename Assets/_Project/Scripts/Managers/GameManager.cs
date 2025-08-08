@@ -32,8 +32,10 @@ public class GameManager : Singleton<GameManager>, IGameManager {
     [SerializeField] private Sprite greenSprite;
     [SerializeField] private Sprite yellowSprite;
 
-    private Coroutine shootingCoroutine;
-    private Coroutine movementCoroutine;
+    [SerializeField] private Material backgroundMaterial;
+
+    private Coroutine _shootingCoroutine;
+    private Coroutine _movementCoroutine;
 
     protected void Start() {
         _serviceLocator = ServiceLocator.Instance;
@@ -43,6 +45,8 @@ public class GameManager : Singleton<GameManager>, IGameManager {
     }
 
     private IEnumerator StartShooting() {
+        yield return new WaitForSeconds(1);
+
         while (_enemyManager.AnyEnemyAlive()) {
             _enemyManager.MakeRandomEnemyShoot();
             yield return new WaitForSeconds(Random.Range(shootingTimeRange.x - enemyShootingTimeRangeDecrease,
@@ -56,8 +60,8 @@ public class GameManager : Singleton<GameManager>, IGameManager {
         _playing = true;
         _playerController.ToggleView(true);
         _enemyManager.SpawnEnemies(enemiesParent, redSprite, greenSprite, yellowSprite);
-        shootingCoroutine = StartCoroutine(StartShooting());
-        movementCoroutine = StartCoroutine(_enemyManager.MoveEnemies());
+        _shootingCoroutine = StartCoroutine(StartShooting());
+        _movementCoroutine = StartCoroutine(_enemyManager.MoveEnemies());
     }
 
     private void NextLevel() {
@@ -90,8 +94,8 @@ public class GameManager : Singleton<GameManager>, IGameManager {
 
     private void StopGame() {
         _playing = false;
-        StopCoroutine(shootingCoroutine);
-        StopCoroutine(movementCoroutine);
+        StopCoroutine(_shootingCoroutine);
+        StopCoroutine(_movementCoroutine);
 
         foreach (Transform child in enemiesParent.transform) {
             Destroy(child.gameObject);

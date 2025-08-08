@@ -1063,6 +1063,8 @@ MonoBehaviour:
   redSprite: {fileID: 8166710274925509176, guid: 77ce555110290574d87d60c64270b04a, type: 3}
   greenSprite: {fileID: -6099873399732076034, guid: 7c534be38d65e99438107077fb7c18fe, type: 3}
   yellowSprite: {fileID: -8425141836431729757, guid: 5a9fd7f6bf722ae47bd2772ffbaf7bbf, type: 3}
+  backgroundMaterial: {fileID: 2100000, guid: f1a7b18777004404fabcff3692664e5e, type: 2}
+  scrollSpeed: 0.1
 --- !u!1 &1044720359
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,7 +2125,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: f1a7b18777004404fabcff3692664e5e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
