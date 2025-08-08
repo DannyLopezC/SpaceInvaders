@@ -120,6 +120,7 @@ public class GameManager : Singleton<GameManager>, IGameManager {
 
     public void RestartGame() {
         _currentLevel = 1;
+        _playerController.RestartHealth();
         RestartLevel();
     }
 

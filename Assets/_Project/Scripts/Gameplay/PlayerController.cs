@@ -11,6 +11,7 @@ public interface IPlayerController : IMonoBehaviourController {
     event Action OnRemoveHealthEvent;
     void ToggleView(bool toggle);
     int GetHealth();
+    void RestartHealth();
 }
 
 public class PlayerController : MonoBehaviourController, IPlayerController {
@@ -103,6 +104,10 @@ public class PlayerController : MonoBehaviourController, IPlayerController {
 
     public int GetHealth() {
         return _currentHealth;
+    }
+
+    public void RestartHealth() {
+        _currentHealth = 3;
     }
 
     public override void OnDestroy() {
