@@ -18,6 +18,8 @@ public class GameManager : Singleton<GameManager>, IGameManager {
     private ServiceLocator _serviceLocator;
     private IEnemyManager _enemyManager;
     private IPlayerController _playerController;
+    private IUIManager _uiManager => UIManager.Instance;
+
     public event Action PlayerWonEvent;
     public event Action StartWaveEvent;
     public event Action PlayerLostEvent;
@@ -62,12 +64,13 @@ public class GameManager : Singleton<GameManager>, IGameManager {
         _enemyManager.SpawnEnemies(enemiesParent, redSprite, greenSprite, yellowSprite);
         _shootingCoroutine = StartCoroutine(StartShooting());
         _movementCoroutine = StartCoroutine(_enemyManager.MoveEnemies());
+        _uiManager.ActivateHeartsPanel(_playerController.GetHealth());
     }
 
     private void NextLevel() {
         _currentLevel++;
 
-        if (_currentLevel > 10) {
+        if (_currentLevel > 2) {
             StopGame();
             OnPlayerWonEvent();
             return;

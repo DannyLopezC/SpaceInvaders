@@ -5,9 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public interface IUIManager {
+    void ActivateHeartsPanel(int hearts);
 }
 
 public class UIManager : Singleton<UIManager>, IUIManager {
+    private ServiceLocator _serviceLocator;
+    private IPlayerController _playerController;
     private IGameManager _gameManager => GameManager.Instance;
 
     [SerializeField] private TMP_Text levelTMP;
@@ -20,9 +23,15 @@ public class UIManager : Singleton<UIManager>, IUIManager {
     [SerializeField] private Button restartButton;
     [SerializeField] private Button quitButton;
 
+    [SerializeField] private RectTransform heartsPanel;
+    [SerializeField] private GameObject heartPrefab;
+
     private int _timer = 5;
 
     protected override void Awake() {
+        _serviceLocator = ServiceLocator.Instance;
+        _playerController = _serviceLocator.GetService<IPlayerController>();
+
         _gameManager.StartWaveEvent += InitLevel;
         _gameManager.PlayerLostEvent += PlayerLostEvent;
         _gameManager.PlayerWonEvent += PlayerWonEvent;
@@ -32,9 +41,12 @@ public class UIManager : Singleton<UIManager>, IUIManager {
         restartButton.gameObject.SetActive(true);
         quitButton.gameObject.SetActive(true);
         victoryTMP.gameObject.SetActive(true);
+
+        heartsPanel.gameObject.SetActive(false);
     }
 
     public void InitLevel() {
+        heartsPanel.gameObject.SetActive(false);
         startButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
@@ -45,6 +57,17 @@ public class UIManager : Singleton<UIManager>, IUIManager {
 
         levelTMP.text = $"Level {_gameManager.GetCurrentLevel()}";
         StartCoroutine(Counter());
+    }
+
+    public void ActivateHeartsPanel(int hearts) {
+        foreach (Transform child in heartsPanel.transform) {
+            Destroy(child.gameObject);
+        }
+
+        heartsPanel.gameObject.SetActive(true);
+        for (int i = 0; i < hearts; i++) {
+            Instantiate(heartPrefab, heartsPanel);
+        }
     }
 
     private IEnumerator Counter() {
@@ -78,6 +101,8 @@ public class UIManager : Singleton<UIManager>, IUIManager {
         restartButton.gameObject.SetActive(true);
         quitButton.gameObject.SetActive(true);
         defeatTMP.gameObject.SetActive(true);
+
+        heartsPanel.gameObject.SetActive(false);
     }
 
     private void OnDestroy() {

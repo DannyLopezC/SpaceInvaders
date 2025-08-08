@@ -41,9 +41,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BaseOffset: 0
+    - _BaseOffset: 0.8239973
     - _EnableExternalAlpha: 0
-    - _Speed: 0
+    - _Speed: 0.1
     - _StartTime: 42.24824
     - _ZWrite: 0
     m_Colors:
