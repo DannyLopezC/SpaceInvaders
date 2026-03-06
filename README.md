@@ -1,29 +1,80 @@
-Space Invaders
+# 👾 Space Invaders – Unity Implementation
 
-Overview
-This project is a simplified gameplay implementation of Space Invaders
-focused on clean architecture and maintainable gameplay systems.
+This project is a recreation of the classic Space Invaders arcade game developed in Unity.  
+The goal of the project is to demonstrate gameplay programming, clean architecture, and object-oriented design principles applied to a simple but complete game system.
 
-Architecture
-The project follows a View–Controller separation:
+---
 
-Controller
-Handles gameplay logic and input.
+## 🎯 Project Objective
 
-View
-Responsible for rendering and animations.
+Develop a playable version of Space Invaders while focusing on:
 
-Systems
-Reusable gameplay systems such as shooting and spawning.
+- Clean and maintainable code architecture.
+- Gameplay system implementation.
+- Separation of responsibilities using good software design practices.
 
-Principles
+---
 
-- SOLID principles
-- Separation of concerns
-- Maintainable and extendable gameplay systems
+## 📌 Features
 
-Tech
-Unity 2021
-C#
+- Player movement and shooting mechanics.
+- Enemy wave movement system.
+- Enemy shooting behavior.
+- Collision detection and damage system.
+- Score tracking.
+- Basic UI elements.
 
-FULL PROYECT: https://github.com/DannyLopezC/SpaceInvaders
+---
+
+## 🖼️ Preview
+
+![Gameplay Demo](https://github.com/DannyLopezC/Proyecto_PDC/blob/main/example.gif)
+
+---
+
+## 🔧 Requirements
+
+This project requires:
+
+Unity 2021 or newer
+
+---
+
+## ▶️ How to run the project
+
+1. Clone this repository:
+
+git clone https://github.com/DannyLopezC/SpaceInvaders.git  
+cd SpaceInvaders
+
+2. Open the project in Unity.
+
+3. Open the main scene.
+
+4. Press Play in the Unity Editor.
+
+---
+
+## 🎮 Controls
+
+Move Left → A / Left Arrow  
+Move Right → D / Right Arrow  
+Shoot → Spacebar
+
+---
+
+## 🧠 Concepts Used
+
+- Object-Oriented Programming
+- Gameplay architecture
+- Unity component system
+- Collision detection
+- Event-driven gameplay systems
+
+---
+
+## 📚 Credits
+
+Project developed as a personal programming exercise focused on gameplay systems and clean architecture in Unity.
+
+Author: [DannyLopezC](https://github.com/DannyLopezC)
