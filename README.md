@@ -28,7 +28,7 @@ Develop a playable version of Space Invaders while focusing on:
 
 ## 🖼️ Preview
 
-![Gameplay Demo](https://github.com/DannyLopezC/Proyecto_PDC/blob/main/example.gif)
+![Gameplay Demo](https://github.com/DannyLopezC/SpaceInvaders/blob/main/demo_video.gif)
 
 ---
 
